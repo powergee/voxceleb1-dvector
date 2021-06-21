@@ -33,6 +33,9 @@ class NeptuneSession(Session):
             print(e)
             self.available = False
     
+    def log_loss(self, loss: float) -> None:
+        self.log_metric("loss", loss)
+    
     def close(self) -> None:
         self.nep_ex.stop()
         self.available = False

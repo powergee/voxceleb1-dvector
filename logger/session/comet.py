@@ -41,6 +41,13 @@ class CometSession(Session):
             print(e)
             self.available = False
 
+    def log_loss(self, loss: float) -> None:
+        if self.com_ex.auto_metric_logging:
+            # If comet is already set to log loss automatically, just return.
+            return
+        else:
+            self.log_metric("loss", loss)
+
     def close(self) -> None:
         self.com_ex.end()
 

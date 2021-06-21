@@ -27,6 +27,9 @@ class TensorboardSession(Session):
     
     def log_metric(self, val_name: str, value: Any) -> None:
         self.writer.add_scalar(val_name, value)
+    
+    def log_loss(self, loss: float) -> None:
+        self.log_metric("loss", loss)
 
     def close(self) -> None:
         self.writer.close()

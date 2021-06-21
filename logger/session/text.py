@@ -72,17 +72,22 @@ class TextSession(Session):
     
     def log_metric(self, val_name: str, value: Any) -> None:
         try:
-            if val_name == "loss":
-                self.loss_sum += value
-                self.loss_count += 1
-                if self.loss_count == 1000:
-                    self.print_on_writer(f"avg loss in 1000 iterations: {self.loss_sum / self.loss_count}")
-                    self.loss_count = 0
-                    self.loss_sum = 0
-            else:
-                self.print_on_writer(f"{val_name}: {value}")
+            self.print_on_writer(f"{val_name}: {value}")
         except Exception as e:
             print("TextSession: Failed to log metrics.\n")
+            print(e)
+            self.available = False
+
+    def log_loss(self, loss: float) -> None:
+        try:
+            self.loss_sum += loss
+            self.loss_count += 1
+            if self.loss_count == 1000:
+                self.print_on_writer(f"avg loss in 1000 iterations: {self.loss_sum / self.loss_count}")
+                self.loss_count = 0
+                self.loss_sum = 0
+        except Exception as e:
+            print("TextSession: Failed to log loss.\n")
             print(e)
             self.available = False
 
